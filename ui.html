@@ -1,0 +1,84 @@
+<head>
+  <style>
+    body {
+      background-color: var(--figma-color-bg);
+      color: var(--figma-color-text);
+      margin: 0;
+      padding: 16px;
+      display: grid;
+    }
+
+    body * {
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+        Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", system,
+        sans-serif;
+      font-size: 16px;
+      font-weight: 400;
+    }
+
+    button {
+      border: none;
+      border-radius: 4px;
+      padding: 8px 16px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      background-color: var(--figma-color-bg-brand);
+      color: var(--figma-color-text);
+    }
+
+    button:hover {
+      background-color: var(--figma-color-bg-brand-hover);
+    }
+
+    button:focus,
+    button:focus-visible {
+      outline-style: solid;
+      outline-color: var(--figma-color-border-component-hover);
+      -webkit-box-shadow: none;
+      box-shadow: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="content">
+    <div class="row">
+      <p>Hey, it's a</p>
+      <p id="pluginData">...</p>
+    </div>
+  </div>
+  <div class="actions">
+    <button id="actionButton">Run</button>
+    <button id="closeButton">Close</button>
+  </div>
+
+  <script>
+    // Get UI elements
+    const pluginData = document.getElementById("pluginData");
+    const actionButton = document.getElementById("actionButton");
+    const closeButton = document.getElementById("closeButton");
+
+    // Listen for selection data from the plugin
+    window.onmessage = (event) => {
+      // Get the message from the plugin
+      const message = event.data.pluginMessage;
+
+      // Check if the message is of type "pluginData"
+      if (message.type === "selectionData") {
+        // Update the UI with the received data
+        pluginData.innerText = message.data;
+      }
+    };
+
+    // Run action
+    document.getElementById("actionButton").onclick = async () => {
+      parent.postMessage({ pluginMessage: { type: "runAction" } }, "*");
+    };
+
+    // Close plugin
+    document.getElementById("closeButton").onclick = async () => {
+      parent.postMessage({ pluginMessage: { type: "closePlugin" } }, "*");
+    };
+  </script>
+</body>
