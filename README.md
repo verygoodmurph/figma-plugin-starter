@@ -2,11 +2,15 @@
 
 Includes examples of core concepts:
 
-- Plugin with UI
+- Plugin with a UI
 - Communication between Code & UI
-- Updating UI
-- Light/Dark Mode UI
-- Top Menus
+- Async functions for dynamic-pages (manifest)
+- Updating the UI
+- Light/Dark mode colors
+- External fonts
+- Navigation menus (remove "menu" from manifest to launch without a menu)
+- Notifications
+- Logging to console
 
 ### Links
 
@@ -15,4 +19,4 @@ Includes examples of core concepts:
 
 Happy building!
 
-👋 Murph
+💙 Murph
