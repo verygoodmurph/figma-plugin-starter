@@ -10,10 +10,5 @@
   "ui": "ui.html",
   "networkAccess": {
     "allowedDomains": ["none"]
-  },
-  "menu": [
-    { "name": "Open Plugin", "command": "openPlugin" },
-    { "separator": true },
-    { "name": "Quick Action", "command": "quickAction" }
-  ]
+  }
 }

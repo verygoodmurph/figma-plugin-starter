@@ -48,43 +48,51 @@ async function logSelectedNodes() {
   });
 }
 
-// Menu command controls
-if (figma.command === "openPlugin") {
-  // Open plugin logic
+// For menu actions, insert in manifest.json
 
-  // Log the command
-  console.log("Opening plugin...");
-} else if (figma.command === "quickAction") {
-  // Quick action logic
+// "menu": [
+//   { "name": "Open Plugin", "command": "openPlugin" },
+//   { "separator": true },
+//   { "name": "Quick Action", "command": "quickAction" }
+// ]
 
-  // Log the command
-  console.log("This is a quick action!");
+// // Menu command controls
+// if (figma.command === "openPlugin") {
+//   // Open plugin logic
 
-  // Close the plugin
-  figma.closePlugin();
-}
+//   // Log the command
+//   console.log("Opening plugin...");
+// } else if (figma.command === "quickAction") {
+//   // Quick action logic
 
-// Listen for messages from the UI
-figma.ui.onmessage = async (msg) => {
-  // From UI: Run Action button clicked
-  if (msg.type === "runAction") {
-    // Run action logic here
+//   // Log the command
+//   console.log("This is a quick action!");
 
-    // Log the action
-    console.log("Running action...");
+//   // Close the plugin
+//   figma.closePlugin();
+// }
 
-    // Notify the user that the action has started
-    figma.notify("Action started!");
-  }
+// // Listen for messages from the UI
+// figma.ui.onmessage = async (msg) => {
+//   // From UI: Run Action button clicked
+//   if (msg.type === "runAction") {
+//     // Run action logic here
 
-  // From UI: Close plugin button clicked
-  else if (msg.type === "closePlugin") {
-    // Close plugin logic here
+//     // Log the action
+//     console.log("Running action...");
 
-    // Log the closing action
-    console.log("Closing plugin...");
+//     // Notify the user that the action has started
+//     figma.notify("Action started!");
+//   }
 
-    // Close the plugin
-    figma.closePlugin();
-  }
-};
+//   // From UI: Close plugin button clicked
+//   else if (msg.type === "closePlugin") {
+//     // Close plugin logic here
+
+//     // Log the closing action
+//     console.log("Closing plugin...");
+
+//     // Close the plugin
+//     figma.closePlugin();
+//   }
+// };
