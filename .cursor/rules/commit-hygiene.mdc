@@ -1,0 +1,8 @@
+---
+alwaysApply: true
+---
+
+## Summarizing Chats
+
+- Provide a commit summary that is concise.
+- Provide steps on how to test the new or modified code.
