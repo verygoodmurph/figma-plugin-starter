@@ -3,12 +3,15 @@ figma.showUI(__html__, {
   themeColors: true,
   height: 200,
   width: 400,
-  title: "Figma Plugin Starter",
+  title: "Figma Plugin Starter - Javascript",
 });
 
 // Clear console and log the plugin name
 console.clear();
-console.log("%cFigma Plugin Starter", "font-weight: bold; color: #8234C5");
+console.log(
+  "%c✨ Figma Plugin Starter - Javascript",
+  "font-weight: bold; color: #0c8ce9"
+);
 
 // Ignore invisible instance children
 figma.skipInvisibleInstanceChildren = true;
@@ -23,6 +26,8 @@ let pluginData; // Used to store selected nodes data
 // let documentVariable = await figma.variables.getVariableByIdAsync(id);
 // let documentTextStyles = await figma.getLocalTextStylesAsync();
 // let documentColorStyles = await figma.getLocalColorStylesAsync();
+// let documentEffectStyles = await figma.getLocalEffectStylesAsync();
+// let documentGridStyles = await figma.getLocalGridStylesAsync();
 
 // Listen for selection changes
 figma.on("selectionchange", async () => {
@@ -39,7 +44,7 @@ async function logSelectedNodes() {
   pluginData = selectedNodes[0].type;
 
   // Log the selected nodes to the console
-  console.log("Selecting...", selectedNodes);
+  console.log("👀", selectedNodes);
 
   // Send the data to the UI with a selectionData message
   figma.ui.postMessage({
@@ -48,51 +53,27 @@ async function logSelectedNodes() {
   });
 }
 
-// For menu actions, insert in manifest.json
+// Listen for messages from the UI
+figma.ui.onmessage = async (msg) => {
+  // From UI: Run Action button clicked
+  if (msg.type === "runAction") {
+    // Run action logic here
 
-// "menu": [
-//   { "name": "Open Plugin", "command": "openPlugin" },
-//   { "separator": true },
-//   { "name": "Quick Action", "command": "quickAction" }
-// ]
+    // Log the action
+    console.log("🧑‍💻 Run has run!");
 
-// // Menu command controls
-// if (figma.command === "openPlugin") {
-//   // Open plugin logic
+    // Notify the user that the action has started
+    figma.notify("🏃 Run has run!");
+  }
 
-//   // Log the command
-//   console.log("Opening plugin...");
-// } else if (figma.command === "quickAction") {
-//   // Quick action logic
+  // From UI: Close plugin button clicked
+  else if (msg.type === "closePlugin") {
+    // Close plugin logic here
 
-//   // Log the command
-//   console.log("This is a quick action!");
+    // Log the closing action
+    console.log("👋 Closing plugin...bye!");
 
-//   // Close the plugin
-//   figma.closePlugin();
-// }
-
-// // Listen for messages from the UI
-// figma.ui.onmessage = async (msg) => {
-//   // From UI: Run Action button clicked
-//   if (msg.type === "runAction") {
-//     // Run action logic here
-
-//     // Log the action
-//     console.log("Running action...");
-
-//     // Notify the user that the action has started
-//     figma.notify("Action started!");
-//   }
-
-//   // From UI: Close plugin button clicked
-//   else if (msg.type === "closePlugin") {
-//     // Close plugin logic here
-
-//     // Log the closing action
-//     console.log("Closing plugin...");
-
-//     // Close the plugin
-//     figma.closePlugin();
-//   }
-// };
+    // Close the plugin
+    figma.closePlugin();
+  }
+};

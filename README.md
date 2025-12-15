@@ -8,7 +8,6 @@ Includes examples of core concepts:
 - Updating the UI
 - Light/Dark mode colors
 - External fonts
-- Navigation menus (remove "menu" from manifest to launch without a menu)
 - Notifications
 - Logging to console
 

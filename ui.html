@@ -2,23 +2,24 @@
   <!-- Google fonts embed -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
-    rel="stylesheet"
-  />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+
 
   <!-- Inline styles -->
   <style>
+    /* Custom colors */
     :root {
       --surface: #ffffff;
       --on-surface: #000000;
     }
 
+    /* Light mode overrides */
     html.figma-light {
       --surface: #ffffff;
       --on-surface: #000000;
     }
 
+    /* Dark mode overrides */
     html.figma-dark {
       --surface: #000000;
       --on-surface: #ffffff;
@@ -41,6 +42,13 @@
       font-weight: 400;
     }
 
+    body *:focus,
+    body *:focus-visible {
+      outline: 2px solid var(--figma-color-border-component-hover);
+      -webkit-box-shadow: none;
+      box-shadow: none;
+    }
+
     p {
       margin: 0;
       padding: 0;
@@ -53,9 +61,20 @@
       color: var(--figma-color-text-secondary);
     }
 
+    p.code {
+      font-family: 'Monaco', 'Menlo', monospace;
+      color: var(--figma-color-text-tertiary);
+    }
+
     p span {
       font-weight: 600;
       color: var(--figma-color-text-brand);
+    }
+
+    p span.callout {
+      font-family: 'Instrument Serif', serif;
+      font-weight: 400;
+      font-size: 1.5em;
     }
 
     button {
@@ -67,18 +86,21 @@
       cursor: pointer;
       background-color: var(--figma-color-bg-brand);
       color: var(--figma-color-text);
+      transition: background-color 0.33s ease-in-out, color 0.33s ease-in-out;
     }
 
     button:hover {
       background-color: var(--figma-color-bg-brand-hover);
     }
 
-    button:focus,
-    button:focus-visible {
-      outline-style: solid;
-      outline-color: var(--figma-color-border-component-hover);
-      -webkit-box-shadow: none;
-      box-shadow: none;
+    button.subtle {
+      background-color: var(--figma-color-bg);
+      color: var(--figma-color-text-secondary);
+    }
+
+    button.subtle:hover {
+      background-color: var(--figma-color-bg-secondary);
+      color: var(--figma-color-text-secondary-hover);
     }
 
     hr {
@@ -97,18 +119,18 @@
 <body>
   <div class="content">
     <div class="row">
-      <p class="small">
-        Open dev console (Plugins > Development > Show/hide console)
+      <p class="small code">
+        Open dev console <br/>(Plugins > Development > Show/hide console)
       </p>
       <hr class="dotted" />
       <p class="small">Select a layer</p>
-      <p>Hey, i'm a <span id="pluginData">...</span> object</p>
+      <p>I'm a <span id="pluginData" class="callout">...</span> object</p>
     </div>
   </div>
 
   <div class="actions">
     <button id="actionButton">Run</button>
-    <button id="closeButton">Close</button>
+    <button id="closeButton" class="subtle">Close</button>
   </div>
 
   <!-- Figma plugin UI script -->
