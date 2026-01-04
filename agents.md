@@ -214,6 +214,41 @@ function traverseNode(node, callback) {
 4. **Accessibility**: Ensure UI is accessible and keyboard-navigable
 5. **Responsiveness**: Keep UI responsive during operations
 
+## JavaScript Syntax Limitations
+
+### Code Context (`code.js`)
+
+The Figma plugin code context runs in a sandboxed JavaScript environment that has limited ES6+ support. **Avoid using modern JavaScript syntax** that may not be supported:
+
+- ❌ **Optional Chaining (`?.`)**: Not supported - Use explicit checks instead
+
+  ```javascript
+  // ❌ Don't use
+  const type = node?.type;
+
+  // ✅ Use instead
+  const type = node ? node.type : null;
+  // or
+  const type = node && node.type ? node.type : null;
+  ```
+
+- ❌ **Nullish Coalescing (`??`)**: Not supported - Use `||` instead
+
+  ```javascript
+  // ❌ Don't use
+  const value = data ?? defaultValue;
+
+  // ✅ Use instead
+  const value = data || defaultValue;
+  ```
+
+- ⚠️ **Arrow Functions**: Generally supported but test thoroughly
+- ⚠️ **Template Literals**: Generally supported
+- ⚠️ **Destructuring**: May have limited support - test before using
+- ⚠️ **Spread Operator**: May have limited support - test before using
+
+**Best Practice**: Use ES5-compatible syntax for maximum compatibility, especially in `code.js`. The UI context (`ui.html`) can use modern JavaScript as it runs in a browser environment.
+
 ## When Writing Code
 
 - Always consider both code and UI contexts
@@ -224,3 +259,4 @@ function traverseNode(node, callback) {
 - Follow Figma's design patterns and conventions
 - Optimize for performance
 - Test thoroughly before suggesting changes
+- **Avoid ES2020+ syntax in code.js** (optional chaining, nullish coalescing, etc.)
