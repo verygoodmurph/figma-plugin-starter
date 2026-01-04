@@ -5,8 +5,8 @@ alwaysApply: true
 ## Logging
 
 - When asked to log changes. Make sure to grab date and time first every time.
-- Maintain a cursor-log.md file in the root project of each app or package depending where the changes occured so that we can track all changes made through Composer.
-- For example apps/api/cursor-log.md or apps/web/cursor-log.md
+- Maintain a MEMORY.md file in the root project of each app or package depending where the changes occurred so that we can track all changes made through Composer.
+- For example apps/api/MEMORY.md or apps/web/MEMORY.md
 - Log format should be:
 
 ```markdown
