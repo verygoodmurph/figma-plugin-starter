@@ -11,6 +11,21 @@ Demonstrates essential Figma plugin concepts:
 - User notifications
 - Console logging
 
+## Quick Start Method
+
+1. Create the plugin specifications for the agent to build
+2. Instruct the agent to build the spec
+3. Install the Figma plugin
+4. Test & iterate
+
+### Creating Plugin Specifications
+
+Use the /enhance-spec-interview command to conduct a comprehensive interview with the user to gather detailed requirements, technical considerations, UX/UI preferences, and architectural decisions.
+
+### Building Plugin From Spec
+
+Use the /build-from-spec command to read the `SPEC.md` file and implement the complete plugin according to the specification. This command transforms the starter template into a fully functional plugin matching all requirements, features, and technical details documented in the specification.
+
 ### Recommended Stack for Non-Technical Users
 
 - [Cursor](https://cursor.com/)
