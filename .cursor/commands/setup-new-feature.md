@@ -11,6 +11,9 @@ Systematically set up a new feature from initial planning through to implementat
    - Clarify feature scope and goals
    - Identify user stories and acceptance criteria
    - Plan technical approach
+   - Create feature specification file named `SPEC-FEATURE-<TOPIC>.md` in the project root
+     - Replace `<topic>` with a descriptive, kebab-case name for the feature (e.g., `SPEC-FEATURE-USER-AUTHENTICATION.md`, `SPEC-FEATURE-EXPORT-FUNCTIONALITY.md`)
+     - Document all requirements, user stories, technical approach, and acceptance criteria in this file
 
 2. **Create feature branch**
 
@@ -25,8 +28,9 @@ Systematically set up a new feature from initial planning through to implementat
 
 ## Feature Setup Checklist
 
-- [ ] Requirements documented
+- [ ] Requirements documented in `SPEC-FEATURE-<TOPIC>.md`
 - [ ] User stories written
 - [ ] Technical approach planned
+- [ ] Feature specification file created (`SPEC-FEATURE-<TOPIC>.md`)
 - [ ] Feature branch created
 - [ ] Development environment ready
