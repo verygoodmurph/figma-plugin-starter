@@ -13,16 +13,10 @@ description: >
 
 You are an expert Figma plugin developer. This starter template is a zero-build-step Figma plugin scaffold. Your job is to help users go from idea to working plugin.
 
-## Project Files
+## Rules & Patterns
 
-```
-manifest.json   → Plugin config (name, id, permissions, domains, editor type)
-code.js         → Code context — sandboxed JS, Figma API access, NO browser APIs
-ui.html         → UI context — iframe, full browser APIs, NO Figma API access
-SPEC.md         → Plugin specification (requirements, features, architecture)
-AGENTS.md       → Deep reference on Figma plugin patterns and API usage
-CLAUDE.md       → Architecture overview and quick reference
-```
+All rules (ES5 syntax, two-context boundary, pitfalls) are in **CLAUDE.md** (always loaded).
+All code patterns (API recipes, theming, manifest fields) are in **AGENTS.md** — read it before implementing.
 
 ## Workflow
 
@@ -101,34 +95,13 @@ Use this when `SPEC.md` is filled out and the user wants to build the plugin.
 
 1. Read `SPEC.md` thoroughly. Read `AGENTS.md` for API patterns and best practices.
 
-2. Plan the implementation:
-   - What message types are needed?
-   - What Figma API calls are required?
-   - What UI components need to be built?
-   - What order should things be implemented in? (foundation first)
+2. Plan the implementation: message types, API calls, UI components, build order.
 
-3. Update `manifest.json`:
-   - Set `name` and `id`
-   - Set `editorType` if not just `["figma"]`
-   - Add `permissions` (e.g., `["teamlibrary"]`) if needed
-   - Add `capabilities` if needed (e.g., `["codegen"]` for Dev Mode)
-   - Add external domains to `networkAccess.allowedDomains`
+3. Update `manifest.json` — name, id, editorType, permissions, capabilities, allowedDomains.
 
-4. Implement `code.js`:
-   - Set up `figma.showUI()` with correct dimensions and title
-   - Implement event listeners (selectionchange, etc.)
-   - Implement all message handlers (`figma.ui.onmessage`)
-   - Add Figma API calls (variables, styles, nodes, text)
-   - Wrap everything in try-catch with `figma.notify()` for errors
-   - **Obey ES5 restrictions** — no `?.`, no `??` (see syntax rules below)
+4. Implement `code.js` — showUI, event listeners, message handlers, API calls, error handling.
 
-5. Implement `ui.html`:
-   - Build HTML structure matching the spec layout
-   - Style with Figma CSS design tokens (support light/dark mode)
-   - Add all interactive behavior in `<script>`
-   - Implement `window.onmessage` handler for incoming messages
-   - Implement `parent.postMessage({ pluginMessage: ... })` for outgoing messages
-   - Add loading states, error states, disabled states
+5. Implement `ui.html` — HTML structure, Figma CSS tokens, interactivity, message passing, loading/error states.
 
 6. Validate:
    - Every message type in the spec has a sender AND receiver
@@ -146,167 +119,10 @@ Use this when the user wants to add functionality to an existing plugin.
 
 1. Read the current `code.js`, `ui.html`, and `manifest.json` to understand what exists.
 
-2. Discuss the feature with the user:
-   - What does it do?
-   - How does the user trigger/interact with it?
-   - What Figma APIs does it need?
-   - Any new message types between contexts?
+2. Discuss the feature with the user: what it does, how it's triggered, what APIs it needs, any new message types.
 
-3. Create a `SPEC-FEATURE-<NAME>.md` file documenting the feature (kebab-case name, e.g., `SPEC-FEATURE-BATCH-RENAME.md`).
+3. Create a `SPEC-FEATURE-<NAME>.md` file documenting the feature (kebab-case name).
 
-4. Implement the feature:
-   - Add new message types to both code.js and ui.html
-   - Add new UI elements and styles
-   - Add new Figma API calls with error handling
-   - Update manifest.json if new permissions/domains are needed
+4. Implement: add message types to both contexts, new UI elements, new API calls with error handling, update manifest if needed.
 
 5. Verify the feature works without breaking existing functionality.
-
----
-
-## Critical Rules
-
-### ES5 Syntax in code.js
-
-The code context sandbox does NOT support all modern JS. These break silently:
-
-```javascript
-// BROKEN — do not use in code.js
-node?.type           // optional chaining
-data ?? fallback     // nullish coalescing
-
-// USE INSTEAD
-node ? node.type : null
-data || fallback
-```
-
-`ui.html` runs in a real browser — modern JS is fine there.
-
-### Two-Context Boundary
-
-Never cross the boundary:
-- `code.js` cannot access `document`, `window`, `fetch`, or any DOM API
-- `ui.html` cannot access `figma.*` at all
-- The ONLY bridge is postMessage
-
-### Message Passing
-
-**code.js → ui.html:**
-```javascript
-figma.ui.postMessage({ type: "dataReady", data: payload });
-```
-
-**ui.html → code.js:**
-```javascript
-parent.postMessage({ pluginMessage: { type: "doAction", data: payload } }, "*");
-```
-
-**Receiving in code.js:**
-```javascript
-figma.ui.onmessage = async (msg) => {
-  if (msg.type === "doAction") { /* handle */ }
-};
-```
-
-**Receiving in ui.html:**
-```javascript
-window.onmessage = (event) => {
-  const msg = event.data.pluginMessage;
-  if (msg.type === "dataReady") { /* handle */ }
-};
-```
-
-Always validate `msg.type`. Always use a `type` field as discriminator.
-
-### Error Handling
-
-Every Figma API call should be wrapped:
-
-```javascript
-try {
-  await someOperation();
-  figma.notify("Done!");
-} catch (error) {
-  console.error("Error:", error);
-  figma.notify("Something went wrong: " + error.message, { error: true });
-}
-```
-
-### Selection Safety
-
-Always check before accessing:
-
-```javascript
-const selection = figma.currentPage.selection;
-if (selection.length === 0) {
-  figma.notify("Select something first");
-  return;
-}
-var node = selection[0];
-```
-
-### Font Loading
-
-Always load before modifying text:
-
-```javascript
-await figma.loadFontAsync(textNode.fontName);
-textNode.characters = "New text";
-```
-
-### UI Theming
-
-Use Figma's CSS tokens — they auto-switch with light/dark mode:
-
-```css
-body { background: var(--figma-color-bg); color: var(--figma-color-text); }
-button { background: var(--figma-color-bg-brand); color: var(--figma-color-text-onbrand); }
-```
-
-Enable with `figma.showUI(__html__, { themeColors: true })`.
-
-### Manifest Updates
-
-When adding features, check if manifest.json needs:
-- `networkAccess.allowedDomains` — for any fetch() calls in ui.html
-- `permissions: ["teamlibrary"]` — for accessing external library files
-- `capabilities: ["codegen"]` — for Dev Mode plugins
-- `enableProposedApi: true` — only for experimental APIs
-- `editorType` — `["figma"]`, `["figjam"]`, `["dev"]`, or `["slides"]`
-
-## Common Figma API Patterns
-
-```javascript
-// Variables
-var collections = await figma.variables.getLocalVariableCollectionsAsync();
-var variable = await figma.variables.getVariableByIdAsync(id);
-
-// Styles
-var textStyles = await figma.getLocalTextStylesAsync();
-var colorStyles = await figma.getLocalColorStylesAsync();
-
-// Node traversal
-function traverse(node, callback) {
-  callback(node);
-  if ("children" in node) {
-    for (var i = 0; i < node.children.length; i++) {
-      traverse(node.children[i], callback);
-    }
-  }
-}
-
-// Persistent storage (survives across documents)
-await figma.clientStorage.setAsync("key", value);
-var stored = await figma.clientStorage.getAsync("key");
-
-// Per-node storage
-node.setPluginData("key", "value");
-var data = node.getPluginData("key");
-```
-
-## Debugging
-
-- **code.js logs:** Figma menu > Plugins > Development > Show/hide console
-- **ui.html logs:** Browser devtools on the plugin iframe
-- **Quick feedback:** `figma.notify("message")` shows a toast in Figma
-- **Both contexts** support `console.log()`, `console.error()`, `console.warn()`

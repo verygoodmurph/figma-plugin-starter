@@ -4,32 +4,20 @@ alwaysApply: true
 
 ## Logging
 
-- When asked to log changes. Make sure to grab date and time first every time.
-- Maintain a MEMORY.md file in the root project of each app or package depending where the changes occurred so that we can track all changes made through Composer.
-- For example apps/api/MEMORY.md or apps/web/MEMORY.md
-- Log format should be:
+When asked to log changes, maintain a `MEMORY.md` file in the project root.
+
+**Format:**
 
 ```markdown
 ## [DD/MM/YYYY HH:MM:SS]
 
-- Change description 1
-- Additional details or context
-- Change description 2
+- Change description
 - File path affected
-- Nature of change
+- Context or reasoning when necessary
 ```
 
-- Each log entry should include:
-- Date and time of changes in [DD/MM/YYYY HH:MM:SS] format
-- To get the correct timestamp:
-  1. Run `date "+%d/%m/%Y %H:%M:%S"` in the terminal
-  2. Use the exact output in the log header format: `## [DD/MM/YYYY HH:MM:SS]`
-- Bullet points for each change made
-- Relevant file paths and descriptions
-- Context or reasoning when necessary
+**Rules:**
+- Get timestamp by running `date "+%d/%m/%Y %H:%M:%S"` — use the exact output
 - Group related changes under a single timestamp
-- Keep logs organized chronologically
-- Use clear, concise descriptions
-- Include enough detail for future reference
-- Separate different days with clear headers
-- Use yarn as the package manager for installing dependencies.
+- Keep descriptions concise with enough detail for future reference
+- Append chronologically (newest last)

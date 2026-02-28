@@ -2,76 +2,58 @@
 
 ## Overview
 
-Generate a Figma Community Plugin markdown file (`community-documentation.md`) with all required fields for publishing to the Figma Community.
+Generate a `community-documentation.md` file with the three fields required to publish a plugin to the Figma Community.
 
 ## Steps
 
-1. **Read manifest.json**
+1. **Read the codebase** — read all of these before writing:
+   - `manifest.json` — plugin name
+   - `code.js` — what the plugin does
+   - `ui.html` — how the user interacts with it
+   - `README.md` — additional context (if it exists)
+   - `SPEC.md` — design intent (if filled out)
 
-   - Extract the plugin name from `manifest.json` (field: `name`)
-   - Verify the name is within the 100 character limit
-   - If the name exceeds 100 characters, truncate it appropriately
+2. **Generate the three required fields:**
 
-2. **Gather plugin information**
+   **Name** (max 100 characters)
+   - Use the `name` field from `manifest.json`
+   - If it exceeds 100 characters, shorten it while keeping it descriptive
 
-   - Read `code.js` and `ui.html` to understand plugin functionality
-   - Read `README.md` for additional context
-   - Review the plugin's core features and capabilities
-   - Analyze the code to identify:
-     - Main purpose and functionality
-     - Key features and actions
-     - UI components and interactions
-     - API usage patterns
-     - Any limitations or constraints
+   **Tagline** (max 100 characters)
+   - One sentence capturing the plugin's core value
+   - Write as a benefit statement, not a feature list
+   - Example: "Batch rename layers with smart patterns and regex support"
 
-3. **Infer required fields**
+   **Description** (no limit, markdown supported)
+   - Open with what the plugin does and why (1-2 sentences)
+   - List key features with brief explanations
+   - Include basic usage instructions
+   - Note any requirements or limitations
+   - Do NOT include the plugin name as a heading — Figma adds it automatically
+   - Supported markdown: **bold**, _italic_, ~~strikethrough~~, lists, [links](url), `code`, code blocks
 
-   - **Tagline**: Generate a succinct description (max 100 characters) based on the plugin's core purpose and main functionality
-   - **Description**: Create a comprehensive overview including:
-     - Plugin's purpose and main features (inferred from code analysis)
-     - How to use each feature (based on UI interactions and code logic)
-     - Any limitations discovered from code review
-     - Considerations or general guidance based on implementation patterns
-     - Format using supported markdown: **bold**, _italic_, ~~strikethrough~~, ordered lists, unordered lists, [links](url), `code`, and code blocks
-
-4. **Create community-documentation.md**
-
-   - Generate the file in the project root
-   - Format with proper markdown structure
-   - Include all three required sections:
-     - Name (from manifest.json)
-     - Tagline (inferred from code, max 100 chars)
-     - Description (inferred from code, markdown formatted)
-
-5. **Validate output**
-   - Ensure name is ≤ 100 characters
-   - Ensure tagline is ≤ 100 characters
-   - Verify markdown formatting is correct
-   - Check that all required fields are present
-
-## File Structure
-
-The generated `figma-community-docs.md` should follow this structure:
+3. **Write `community-documentation.md`** in the project root:
 
 ```markdown
 # Name
 
-[Plugin name from manifest.json, max 100 characters]
+[Plugin name, max 100 characters]
 
 ## Tagline
 
-[Inferred tagline based on plugin functionality, max 100 characters]
+[One compelling sentence, max 100 characters]
 
 ## Description
 
-[Inferred description with markdown formatting support, based on code analysis]
+[Full description with markdown formatting]
 ```
 
-## Notes
+4. **Validate** — name ≤ 100 chars, tagline ≤ 100 chars, description based on actual code, print character counts for Name and Tagline
 
-- The name field will be automatically extracted from `manifest.json`
-- Tagline and description will be automatically inferred from code analysis
-- All character limits must be enforced (name ≤ 100 chars, tagline ≤ 100 chars)
-- Description should use markdown formatting appropriately
-- Analyze the code thoroughly to understand the plugin's purpose and features
-- Base the description on actual functionality found in the code, not assumptions
+## Rules
+
+- Every feature mentioned must exist in the code
+- The tagline is what people see in search results — make it specific and compelling
+  - Bad: "A useful Figma plugin for designers"
+  - Good: "Extract and export all color styles as CSS, Tailwind, or JSON"
+- Write for someone browsing the Figma Community who has never seen the plugin
