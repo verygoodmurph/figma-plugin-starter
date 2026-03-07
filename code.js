@@ -40,17 +40,27 @@ async function logSelectedNodes() {
   // Get the selected nodes
   const selectedNodes = figma.currentPage.selection;
 
-  // Set the plugin data with the selected nodes
-  pluginData = selectedNodes[0].type;
+  // Guard: do nothing if nothing is selected
+  if (selectedNodes.length === 0) {
+    return;
+  }
 
-  // Log the selected nodes to the console
-  console.log("👀", selectedNodes);
+  try {
+    // Set the plugin data with the selected nodes
+    pluginData = selectedNodes[0].type;
 
-  // Send the data to the UI with a selectionData message
-  figma.ui.postMessage({
-    type: "selectionData",
-    data: pluginData,
-  });
+    // Log the selected nodes to the console
+    console.log("👀", selectedNodes);
+
+    // Send the data to the UI with a selectionData message
+    figma.ui.postMessage({
+      type: "selectionData",
+      data: pluginData,
+    });
+  } catch (error) {
+    console.error("Error reading selection:", error);
+    figma.notify("Error: " + error.message, { error: true });
+  }
 }
 
 // Listen for messages from the UI

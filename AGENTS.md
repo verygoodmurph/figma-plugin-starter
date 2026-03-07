@@ -40,7 +40,7 @@ var variable = await figma.variables.getVariableByIdAsync(id);
 
 // Styles
 var textStyles = await figma.getLocalTextStylesAsync();
-var colorStyles = await figma.getLocalColorStylesAsync();
+var colorStyles = await figma.getLocalPaintStylesAsync();
 ```
 
 ### Error Handling
@@ -151,7 +151,7 @@ Update these fields in `manifest.json` when building:
 
 ### Styles API
 
-- `figma.getLocalTextStylesAsync()` / `figma.getLocalColorStylesAsync()`
+- `figma.getLocalTextStylesAsync()` / `figma.getLocalPaintStylesAsync()`
 - `figma.getLocalEffectStylesAsync()` / `figma.getLocalGridStylesAsync()`
 
 ### Node Operations
