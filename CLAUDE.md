@@ -78,6 +78,7 @@ Always validate `msg.type` before acting. Always wrap UI→Code messages in `{ p
 
 - When implementing multi-step plans, **implement AND verify each step** before moving to the next.
 - Do not produce plans without beginning implementation unless explicitly asked to only plan.
+- After completing changes, provide a concise commit summary and steps to test the new or modified code.
 
 ## Bug Fixes
 

@@ -1,4 +1,0 @@
-# Ignore the .env file in the root directory
-.env
-.env.*
-**/env

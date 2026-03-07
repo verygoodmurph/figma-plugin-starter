@@ -1,0 +1,64 @@
+---
+alwaysApply: true
+---
+
+# Figma Plugin Starter
+
+A zero-build-step Figma plugin template. Two files do all the work: `code.js` (plugin logic) and `ui.html` (plugin interface). No bundler, no TypeScript, no package.json.
+
+> **Claude Code users:** Full guided workflows, skills, and persistent instructions live in `CLAUDE.md` and `.claude/skills/`. Use those as the source of truth.
+
+## Architecture: Two Isolated Contexts
+
+- **`code.js`** — Figma API access (`figma.*`). No DOM, no `window`, no `document`, no `fetch`.
+- **`ui.html`** — Standard browser iframe. No `figma.*` access.
+- The only bridge between them is `postMessage`.
+
+```javascript
+// code.js → ui.html
+figma.ui.postMessage({ type: "data", payload: value });
+
+// ui.html → code.js
+parent.postMessage({ pluginMessage: { type: "action", payload: value } }, "*");
+```
+
+Always validate `msg.type` before acting. Always wrap UI→Code messages in `{ pluginMessage: ... }`.
+
+## Pitfalls
+
+- **`?.` and `??` in code.js** — BROKEN. Use `node && node.type` and `||` instead. Write ES5-compatible code in `code.js`; `ui.html` supports modern JS.
+- **Font loading** — Always `await figma.loadFontAsync(node.fontName)` before setting `.characters`.
+- **Empty selection** — Check `selection.length` before accessing `selection[0]`.
+- **Missing domains** — Declare external domains in `manifest.json` `networkAccess.allowedDomains` or `fetch()` fails silently.
+- **Error handling** — Wrap all Figma API calls in try-catch with `figma.notify("msg", { error: true })`.
+
+## API Rules
+
+- Use `getLocalPaintStylesAsync`, not `getLocalColorStylesAsync`
+- Pass collection **objects**, not string IDs, to `createVariable`
+- Ensure nodes are in auto-layout parents before setting `layoutSizingHorizontal`
+- Read `AGENTS.md` for full API reference, code recipes, and manifest config before implementing
+
+## Workflow
+
+- Implement AND verify each step before moving to the next. Do not produce plans without beginning implementation unless explicitly asked.
+- After UI changes: verify grid/flex column counts match child elements, clickable areas aren't blocked, `innerHTML` is allowed.
+- When fixing bugs: verify the fix doesn't introduce side effects. Test empty/zero/unaudited edge cases.
+- After completing changes: provide a concise commit summary and steps to test the new or modified code.
+
+## Common Workflows (manual — Claude Code users can use `/figma-plugin`, `/create-readme`, `/create-community-description`)
+
+**Spec → Build:**
+1. Fill out `SPEC.md` with features, UI layout, message protocol, API usage, edge cases
+2. Update `manifest.json` — name, id, editorType, permissions, allowedDomains
+3. Implement `code.js` then `ui.html`
+4. Validate: every message type has sender + receiver, all API calls in try-catch, no `?.`/`??` in code.js
+
+**Add a feature:**
+1. Create `SPEC-FEATURE-<NAME>.md` documenting the feature
+2. Add message types to both contexts, new UI elements, new API calls
+3. Verify it doesn't break existing functionality
+
+**Generate README:** Read `manifest.json`, `code.js`, `ui.html`, `SPEC.md` — infer all content from code, ask user for links and license.
+
+**Generate community docs:** Read codebase, produce `community-documentation.md` with Name (≤100 chars), Tagline (≤100 chars), and Description. Every feature mentioned must exist in the code.
