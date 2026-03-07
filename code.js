@@ -10,7 +10,7 @@ figma.showUI(__html__, {
 console.clear();
 console.log(
   "%c✨ Figma Plugin Starter - Javascript",
-  "font-weight: bold; color: #0c8ce9"
+  "font-weight: bold; color: #0c8ce9",
 );
 
 // Ignore invisible instance children
@@ -25,7 +25,7 @@ let pluginData; // Used to store selected nodes data
 // let documentCollectionsById = await figma.variables.getLocalVariableCollectionsByIdAsync(id);
 // let documentVariable = await figma.variables.getVariableByIdAsync(id);
 // let documentTextStyles = await figma.getLocalTextStylesAsync();
-// let documentColorStyles = await figma.getLocalColorStylesAsync();
+// let documentColorStyles = await figma.getLocalPaintStylesAsync();
 // let documentEffectStyles = await figma.getLocalEffectStylesAsync();
 // let documentGridStyles = await figma.getLocalGridStylesAsync();
 
